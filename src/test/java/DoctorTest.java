@@ -3,6 +3,7 @@ import org.junit.*;
 import static org.junit.Assert.*;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Date;
 
 public class DoctorTest {
 
@@ -62,15 +63,24 @@ public class DoctorTest {
     assertTrue(myDoctor.equals(savedDoctor));
   }
 
-  // @Test
-  // public void getPatients_retrievesAllPatientsFromDataBase_patients() {
-  //   Doctor myDoctor = new Doctor ("Allen Jones", "Oncology");
-  //   myDoctor.save();
-  //   Patient firstPatient = new Patient("Kyle", "1981-12-18");
-  //   firstPatient.save();
-  //   Patient secondPatient = new Patient("Second patient", "1999-01-10");
-  //   secondPatient.save();
-  //   Patient[] patients = new Patient[] {firstPatient, secondPatient};
-  //   assertTrue(myDoctor.getPatients().containsAll(Array.asList(patients)));
-  // }
+  @Test
+  public void getPatients_retrievesAllPatientsOfDoctorFromDataBase_patients() {
+    Doctor myDoctor = new Doctor ("Allen Jones", "Oncology");
+    myDoctor.save();
+    Date birthdate = new Date(81, 11, 18);
+    Patient firstPatient = new Patient("Kyle", birthdate);
+    firstPatient.save();
+    firstPatient.assignDoctor(myDoctor.getId());
+    System.out.println("firstpatient doc" + firstPatient.getDoctor());//1
+    birthdate = new Date(81, 6, 9);
+    Patient secondPatient = new Patient("Second patient", birthdate);
+    secondPatient.save();
+    secondPatient.assignDoctor(myDoctor.getId());
+    System.out.println("mydoc get patients"  + myDoctor.getPatients());
+    Patient[] patients = new Patient[] {firstPatient, secondPatient};
+    System.out.println(patients[0].getDoctor());
+    System.out.println(patients[1].getDoctor());
+    System.out.println(myDoctor.getId());
+    assertTrue(myDoctor.getPatients().containsAll(Arrays.asList(patients)));
+  }
 }

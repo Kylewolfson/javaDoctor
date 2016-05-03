@@ -27,7 +27,7 @@ public class Doctor {
   }
 
   public int getId() {
-    return id;
+    return this.id;
   }
 
   public String getSpecialty() {
@@ -35,15 +35,24 @@ public class Doctor {
   }
 
   public static List<Doctor> all() {
-    String sql = "SELECT id, name FROM Doctors";
+    String sql = "SELECT id, name FROM doctors";
     try(Connection con = DB.sql2o.open()) {
       return con.createQuery(sql).executeAndFetch(Doctor.class);
     }
   }
 
+  public List<Patient> getPatients() {
+    try(Connection con = DB.sql2o.open()) {
+    String sql = "SELECT * FROM patients WHERE doctor_id=:id";
+      return con.createQuery(sql)
+        .addParameter("id", this.id)
+        .executeAndFetch(Patient.class);
+    }
+  }
+
   public static Doctor find(int id) {
     try(Connection con = DB.sql2o.open()) {
-      String sql = "SELECT * FROM Doctors WHERE id=:id";
+      String sql = "SELECT * FROM doctors WHERE id=:id";
       Doctor doctor = con.createQuery(sql)
         .addParameter("id", id)
         .executeAndFetchFirst(Doctor.class);

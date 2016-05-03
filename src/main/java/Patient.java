@@ -32,10 +32,11 @@ public class Patient {
   public void assignDoctor(int doctor_id) {
     try(Connection con = DB.sql2o.open()) {
       int id = this.getId();
-      String sql = "UPDATE patients SET doctor_id = :doctor_id WHERE id = :patientId";
+      this.doctor_id = doctor_id;
+      String sql = "UPDATE patients SET doctor_id = :doctor_id WHERE id = :patient_id";
       con.createQuery(sql)
       .addParameter("doctor_id", doctor_id)
-      .addParameter("patientId", id)
+      .addParameter("patient_id", id)
       .executeUpdate();
       }
   }
