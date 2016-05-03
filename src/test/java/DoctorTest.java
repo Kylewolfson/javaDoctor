@@ -83,4 +83,45 @@ public class DoctorTest {
     System.out.println(myDoctor.getId());
     assertTrue(myDoctor.getPatients().containsAll(Arrays.asList(patients)));
   }
+
+  @Test
+  public void getDoctorsBySpecialty_retrievesAllDoctorsWithASpecialtyFromDatabase_doctors() {
+    Doctor firstDoctor = new Doctor ("Firsty McFirstguy", "Oncology");
+    Doctor secondDoctor = new Doctor ("Second Man", "Oncology");
+    Doctor thirdDoctor = new Doctor ("Thirdwheelimus Maximus", "Neurology");
+    firstDoctor.save();
+    secondDoctor.save();
+    thirdDoctor.save();
+    Doctor[] doctors = new Doctor[] { firstDoctor, secondDoctor };
+    assertTrue(Doctor.getDoctorsBySpecialty("Oncology").containsAll(Arrays.asList(doctors)));
+  }
+
+  @Test
+  public void returnDoctorsAlphabetically_doctorsSortedAlphabetically() {
+  Doctor firstDoctor = new Doctor ("Zeta Lastperson", "Oncology");
+  Doctor secondDoctor = new Doctor ("Second Man", "Oncology");
+  Doctor thirdDoctor = new Doctor ("Alpha Maximus", "Neurology");
+  firstDoctor.save();
+  secondDoctor.save();
+  thirdDoctor.save();
+  Doctor[] doctors = new Doctor[] { thirdDoctor, secondDoctor, firstDoctor };
+  List<Doctor> docList = Doctor.returnDoctorsAlphabetically();
+  assertTrue(docList.get(0).equals(thirdDoctor));
+  }
+
+  @Test
+  public void getPatients_retrievesAllPatientsOfDoctorFromDataBase_patients() {
+    Doctor myDoctor = new Doctor ("Allen Jones", "Oncology");
+    myDoctor.save();
+    Date birthdate = new Date(81, 11, 18);
+    Patient firstPatient = new Patient("Kyle", birthdate);
+    firstPatient.save();
+    firstPatient.assignDoctor(myDoctor.getId());
+    birthdate = new Date(81, 6, 9);
+    Patient secondPatient = new Patient("Second patient", birthdate);
+    secondPatient.save();
+    secondPatient.assignDoctor(myDoctor.getId());
+    assertEquals(myDoctor.getPatientcount(), 2);
+  }
+
 }

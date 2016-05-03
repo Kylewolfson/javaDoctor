@@ -41,6 +41,32 @@ public class Doctor {
     }
   }
 
+  public static List<Doctor> getDoctorsBySpecialty(String specialty) {
+    try (Connection con = DB.sql2o.open()) {
+      String sql = "SELECT * FROM doctors WHERE specialty=:specialty";
+      return con.createQuery(sql)
+        .addParameter("specialty", specialty)
+        .executeAndFetch(Doctor.class);
+    }
+  }
+
+  // public int getPatientCount() {
+  //   try (Connection con = DB.sql2o.open()) {
+  //     String sql = "SELECT COUNT (name) AS count FROM patients WHERE doctor_id=:id";
+  //     return con.createQuery(sql)
+  //       .addParameter("id", this.id)
+  //       .executeAndFetch();
+  //   }
+  // }
+
+  public static List<Doctor> returnDoctorsAlphabetically() {
+    try (Connection con = DB.sql2o.open()) {
+      String sql = "SELECT * FROM doctors ORDER BY name";
+      return con.createQuery(sql)
+        .executeAndFetch(Doctor.class);
+    }
+  }
+
   public List<Patient> getPatients() {
     try(Connection con = DB.sql2o.open()) {
     String sql = "SELECT * FROM patients WHERE doctor_id=:id";
